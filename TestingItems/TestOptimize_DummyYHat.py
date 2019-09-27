@@ -1,0 +1,54 @@
+#!/usr/bin/python3
+
+from fastai.basics import tensor, nn
+import torch, numpy, pandas
+
+def hypothesis(vertLatents,horiLatents):
+    # return the value of the latent vectors' inner/dot product
+    return numpy.dot(vertLatents,horiLatents)
+
+def mse(y_hat,y):
+    # calculate RMSE where errorVec is a matrix of errors
+    #errorVec = numpy.subtract(y_hat,y)
+    return ((y_hat-y)**2).mean()
+
+def update(y_hat):
+    # perform gradient descent
+    loss = mse(y_hat,blockData)
+
+    loss.backward()
+    if t%10 == 0:
+        print(t,'-------------',loss)
+        dict1 = {'vertLatents':[vertLatents.grad,vertLatents.is_leaf,
+                                vertLatents.requires_grad],
+                 'horiLatents':[horiLatents.grad,horiLatents.is_leaf,
+                                horiLatents.requires_grad],
+                 'y_hat':[y_hat.grad,y_hat.is_leaf,
+                        y_hat.requires_grad]}
+        df1 = pandas.DataFrame.from_dict(dict1,orient='index')
+        df1.columns = ['grad','is_leaf','requires_grad']
+        #print(df1)
+    with torch.no_grad():
+        y_hat.sub_(lr * y_hat.grad)
+        y_hat.grad.zero_()
+
+vecLatents = 10
+shape = (20,14)
+# random large block of data
+blockData = tensor(numpy.random.random_sample(shape))
+
+horiLatents = \
+        nn.Parameter(tensor(numpy.random.random_sample((vecLatents,shape[1]))))
+vertLatents = \
+        nn.Parameter(tensor(numpy.random.random_sample((shape[0],vecLatents))))
+
+'''
+a = nn.Parameter(tensor(hypothesis(vertLatents,horiLatents)))
+print('a.requires_grad      ------ ',a.requires_grad)
+'''
+
+lr = 1e-1
+y_hat = tensor(hypothesis(vertLatents,horiLatents))
+y_hat.requires_grad_(True)
+for t in range(10001):
+    update(y_hat)
