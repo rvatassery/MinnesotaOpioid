@@ -1,5 +1,5 @@
 # MinnesotaOpioid
-Analysis of opioid prescription rates in Minnesota
+### Analysis of opioid prescription rates in Minnesota
 
 ## Because of the experimental nature of this analysis, I haven't written great code. It's mostly proof of concept for the tools I'm demonstrating.
 
