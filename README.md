@@ -1,6 +1,8 @@
 # MinnesotaOpioid
 Analysis of opioid prescription rates in Minnesota
 
+## Because of the experimental nature of this analysis, I haven't written great code. It's mostly proof of concept for the tools I'm demonstrating.
+
 Start with script StandardizeOpioid.py and, from files OpioidData????ByCounty.txt in RawDataIn/, create OpioidMNDataByCounty.csv.
 
 NOTE that StandardizeOpioid.py right now does not understand the file structure, it is looking for the .txt (tab separated) files in the run directory, but they're actually in RawDataIn/. 
